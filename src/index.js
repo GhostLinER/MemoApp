@@ -22,7 +22,7 @@ const Router = createStackNavigator(
     Camera,
   },
   {
-    initialRouteName: 'Camera',
+    initialRouteName: 'Formdata',
     headerMode: 'none',
   }
 );
