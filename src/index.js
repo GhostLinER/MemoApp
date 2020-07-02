@@ -8,7 +8,7 @@ import {
   ForgotPasswordScreen,
   Dashboard,
   Formdata,
-  // Camera,
+  CameraUse,
 } from './screens';
 
 const Router = createStackNavigator(
@@ -19,10 +19,10 @@ const Router = createStackNavigator(
     ForgotPasswordScreen,
     Dashboard,
     Formdata,
-    // Camera,
+    CameraUse,
   },
   {
-    initialRouteName: 'Formdata',
+    initialRouteName: 'CameraUse',
     headerMode: 'none',
   }
 );
