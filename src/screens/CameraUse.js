@@ -1,38 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
+import * as MediaLibrary from 'expo-media-library';
+import BackButton from '../components/BackButton';
 
 const Cameras = ({ navigation }) => {
 
     const [hasPermission, setHasPermission] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
-  
+    const [hasPermission_roll, setHasPermissionRoll] = useState(null);
+
+
     useEffect(() => {
-        console.log("Here");
         (async () => {
-            console.log("In");
-            // console.log(Permissions.askAsync(Permissions.CAMERA));
-            console.log("CHECK");
             // const { status }  = await Camera.requestPermissionsAsync();
-            const permission_roll = await Permissions.getAsync(Permissions.CAMERA_ROLL);
-            console.log(permission_roll.status);
-            const permission  = await Permissions.askAsync(Permissions.CAMERA);
+            const permission  = await Permissions.askAsync(Permissions.CAMERA, Permissions.CAMERA_ROLL);
             console.log(permission.status);
-            console.log("SURE");
             setHasPermission({ hasPermission: permission.status === 'granted'});
-            console.log(hasPermission);
-            console.log("END");
+            // const permission_roll  = await Permissions.getAsync(Permissions.CAMERA_ROLL);
+            // console.log(permission_roll.status);
+            // setHasPermissionRoll({ hasPermission_roll: permission_roll.status === 'granted'});
+
         })();
       }, []);
+    
 
-    // useEffect
-    console.log(hasPermission)
+    snap = async () => {
+      if (this.camera) {
+        let photo = await this.camera.takePictureAsync();
+        console.log('photo', photo);
+        MediaLibrary.saveToLibraryAsync(photo.uri);
+        console.log("save");
+      }
+    };
 
+    
     if (hasPermission === null || hasPermission === undefined) {
       return (
             <View>
-                <Text style={{ fontSize: 86}}>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ERROR!!!!!!!!!!!!!!!!!!!!!!!!</Text>
+                <Text style={{ fontSize: 86}}>Please Permisson!!</Text>
             </View>);
     }
     else if (hasPermission === false) {
@@ -40,7 +47,12 @@ const Cameras = ({ navigation }) => {
     }
     return (
       <View style={{ flex: 1 }}>
-        <Camera style={{ flex: 1 }} type={type}>
+        <Camera 
+                style={{ flex: 1 }} 
+                type={type}
+                ref={ref => {
+                  this.camera = ref;
+                }}>
           <View
             style={{
               flex: 1,
@@ -54,19 +66,22 @@ const Cameras = ({ navigation }) => {
                 alignItems: 'center',
               }}
               onPress={() => {
-                setType(
-                    type === Camera.Constants.Type.back
-                      ? Camera.Constants.Type.front
-                      : Camera.Constants.Type.back
-                );
-                useEffect
+                // setType(
+                //     type === Camera.Constants.Type.back
+                //       ? Camera.Constants.Type.front
+                //       : Camera.Constants.Type.back
+                // );
+                // useEffect
+                snap();
+                console.log("click snap");
               }}>
-              <Text style={{ fontSize: 168, marginBottom: 100, color: 'white' }}> Flip </Text>
+              <Text style={{ fontSize: 68, marginBottom: 100, color: 'white' }}> snap </Text>
             </TouchableOpacity>
           </View>
+          <BackButton goBack={() => navigation.navigate('Formdata')}/>
         </Camera>
       </View>
-    )
+    );
 
 };
 
