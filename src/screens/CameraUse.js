@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
 import * as MediaLibrary from 'expo-media-library';
 import BackButton from '../components/BackButton';
+import ButtonSnap from '../components/ButtonSnap';
 
 const Cameras = ({ navigation }) => {
 
     const [hasPermission, setHasPermission] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
-    const [hasPermission_roll, setHasPermissionRoll] = useState(null);
+    // const [hasPermission_roll, setHasPermissionRoll] = useState(null);
 
 
     useEffect(() => {
@@ -59,6 +60,10 @@ const Cameras = ({ navigation }) => {
               backgroundColor: 'transparent',
               flexDirection: 'row',
             }}>
+            {/* <ButtonSnap onPress={() =>{
+              snap();
+              console.log("mmmmmmm");
+            }}/> */}
             <TouchableOpacity
               style={{
                 flex: 1,
@@ -66,16 +71,11 @@ const Cameras = ({ navigation }) => {
                 alignItems: 'center',
               }}
               onPress={() => {
-                // setType(
-                //     type === Camera.Constants.Type.back
-                //       ? Camera.Constants.Type.front
-                //       : Camera.Constants.Type.back
-                // );
-                // useEffect
                 snap();
                 console.log("click snap");
               }}>
-              <Text style={{ fontSize: 68, marginBottom: 100, color: 'white' }}> snap </Text>
+              {/* <Text style={{ fontSize: 68, marginBottom: 100, color: 'white' }}> snap </Text> */}
+              <Image style={styles.image} source={require('../assets/camera.png')} />
             </TouchableOpacity>
           </View>
           <BackButton goBack={() => navigation.navigate('Formdata')}/>
@@ -85,5 +85,12 @@ const Cameras = ({ navigation }) => {
 
 };
 
+const styles = StyleSheet.create({
+  image: {
+    width: 80,
+    height: 80,
+    marginBottom: 30,
+  },
+});
 
 export default Cameras;
