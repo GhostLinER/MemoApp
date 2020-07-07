@@ -1,33 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
+import * as MediaLibrary from 'expo-media-library';
 import BackButton from '../components/BackButton';
 
 const Cameras = ({ navigation }) => {
 
     const [hasPermission, setHasPermission] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
+    const [hasPermission_roll, setHasPermissionRoll] = useState(null);
+
 
     useEffect(() => {
         (async () => {
             // const { status }  = await Camera.requestPermissionsAsync();
-            const permission_roll = await Permissions.getAsync(Permissions.CAMERA_ROLL);
-            console.log(permission_roll.status);
-            const permission  = await Permissions.askAsync(Permissions.CAMERA);
+            const permission  = await Permissions.askAsync(Permissions.CAMERA, Permissions.CAMERA_ROLL);
             console.log(permission.status);
             setHasPermission({ hasPermission: permission.status === 'granted'});
+            // const permission_roll  = await Permissions.getAsync(Permissions.CAMERA_ROLL);
+            // console.log(permission_roll.status);
+            // setHasPermissionRoll({ hasPermission_roll: permission_roll.status === 'granted'});
+
         })();
       }, []);
     
 
-    takePicture = async function() {
+    snap = async () => {
       if (this.camera) {
         let photo = await this.camera.takePictureAsync();
-        console.log("take that")
-        alert(photo);
+        console.log('photo', photo);
+        MediaLibrary.saveToLibraryAsync(photo.uri);
+        console.log("save");
       }
-    }
+    };
 
     
     if (hasPermission === null || hasPermission === undefined) {
@@ -43,7 +49,10 @@ const Cameras = ({ navigation }) => {
       <View style={{ flex: 1 }}>
         <Camera 
                 style={{ flex: 1 }} 
-                type={type}>
+                type={type}
+                ref={ref => {
+                  this.camera = ref;
+                }}>
           <View
             style={{
               flex: 1,
@@ -63,7 +72,7 @@ const Cameras = ({ navigation }) => {
                 //       : Camera.Constants.Type.back
                 // );
                 // useEffect
-                takePicture();
+                snap();
                 console.log("click snap");
               }}>
               <Text style={{ fontSize: 68, marginBottom: 100, color: 'white' }}> snap </Text>
