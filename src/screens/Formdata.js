@@ -21,7 +21,7 @@ import RNPickerSelect from 'react-native-picker-select';
 const Formdata = ({ navigation }) => {
   const [id, setId] = useState({ value: '', error: '' });
   const [gender, setGender] = useState('male');
-  const [maleCheck , setMaleCheck] = useState(false);
+  const [maleCheck , setMaleCheck] = useState(true);
   const [femaleCheck , setFemaleCheck] = useState(false);
   const [age, setAge] = useState({ value: '', error: '' });
   const [drug, setDrug] = useState({ value: '', error: '' });
@@ -149,85 +149,92 @@ const Formdata = ({ navigation }) => {
       right: 15,
     },
   };
-  const _chooseprob = () => {
-    // if(drug.value == 'Hyperosmolar agents') {
-    //   console.log(problemall['problem1'])
-    // }
-    <RNPickerSelect 
-            onValueChange={(value) => setDrug(value)}
-            style={pickerStyle}
-            placeholder={{
-              label: 'Select Drug',
-              value: null,
-            }}
-            items = {drugs}
-      />
-  }
+  // const _chooseprob = () => {
+  //   // if(drug.value == 'Hyperosmolar agents') {
+  //   //   console.log(problemall['problem1'])
+  //   // }
+  //   <RNPickerSelect 
+  //           onValueChange={(value) => setDrug(value)}
+  //           style={pickerStyle}
+  //           placeholder={{
+  //             label: 'Select Drug',
+  //             value: null,
+  //           }}
+  //           items = {drugs}
+  //     />
+  // }
   const maleCheckHandler = () => {
     if(femaleCheck){
+      // console.log("set male")
       setFemaleCheck(false);
       setMaleCheck(true);
       setGender('male');
     }
     else {
       // setFemaleCheck(true);
-      setMaleCheck(false);
-      setGender('female');
-    }
-  };
-  const femaleCheckHandler = () => {
-    if(maleCheck){
-      setFemaleCheck(true);
-      setMaleCheck(false);
-      setGender('female');
-    }
-    else {
-      // setFemaleCheck(true);
       setMaleCheck(true);
       setGender('male');
     }
-    console.log(gender);
-    console.log(maleCheck);
-    console.log(femaleCheck);
+    // console.log("gender " , gender);
+    // console.log("malecheck " , maleCheck);
+    // console.log("femalecheck " , femaleCheck);
+  };
+  const femaleCheckHandler = () => {
+    if(maleCheck){
+      console.log("set female");
+      setMaleCheck(false);
+      setFemaleCheck(true);
+      setGender('female');
+      console.log("gender " , gender);
+      console.log("malecheck " , maleCheck);
+      console.log("femalecheck " , femaleCheck);
+    }
+    else {
+      // setFemaleCheck(true);
+      setFemaleCheck(true);
+      setGender('female');
+    }
+    // console.log("gender " , gender);
+    // console.log("malecheck " , maleCheck);
+    // console.log("femalecheck " , femaleCheck);
   };
   const _submit = () => {
     // console.log(id.value);
-    // console.log(gender.value);
+    // console.log(gender);
     // console.log(age.value);
-    // console.log(drug.value);
+    // console.log(drug);
     // console.log(mg.value);
     // console.log(ml.value);
-    console.log(selectedValue);
-    // var firebaseConfig = {
-    //   apiKey: 'AIzaSyBiB_R-Cut-X5cS-L9TvUfxaOPGRsGY_Ug',
-    //   authDomain: 'extra-app-f2fbb.firebaseapp.com',
-    //   databaseURL: 'https://extra-app-f2fbb.firebaseio.com',
-    //   projectId: 'extra-app-f2fbb',
-    //   // storageBucket: "extra-app-f2fbb.appspot.com",
-    //   storageBucket: '',
-    //   messagingSenderId: '155141768009',
-    //   // appId: "1:155141768009:web:bd37acd99c4a6b461ad098",
-    //   // measurementId: "G-S2868PT7EC"
-    // };
-    // firebase.initializeApp(firebaseConfig);
-    // console.log('add');
-    // firebase
-    //   .database()
-    //   .ref('database/002')
-    //   .set({
-    //     id: id.value,
-    //     age: age.value,
-    //     gender: gender.value,
-    //     drug: drug.value,
-    //     concentrationMG: mg.value,
-    //     concentrationML: ml.value,
-    //   })
-    //   .then(() => {
-    //     console.log('success');
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
+    // console.log(selectedValue);
+    var firebaseConfig = {
+      apiKey: 'AIzaSyBiB_R-Cut-X5cS-L9TvUfxaOPGRsGY_Ug',
+      authDomain: 'extra-app-f2fbb.firebaseapp.com',
+      databaseURL: 'https://extra-app-f2fbb.firebaseio.com',
+      projectId: 'extra-app-f2fbb',
+      // storageBucket: "extra-app-f2fbb.appspot.com",
+      storageBucket: '',
+      messagingSenderId: '155141768009',
+      // appId: "1:155141768009:web:bd37acd99c4a6b461ad098",
+      // measurementId: "G-S2868PT7EC"
+    };
+    // console.log(gender.value);
+    firebase.initializeApp(firebaseConfig);
+    console.log('add');
+    firebase.database().ref('database/003').set({
+        id: id.value,
+        age: age.value,
+        gender: gender,
+        drug: drug,
+        concentrationMG: mg.value,
+        concentrationML: ml.value,
+      })
+      .then(() => {
+        console.log('success');
+        alert("success");
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
   return (
     <Background>
