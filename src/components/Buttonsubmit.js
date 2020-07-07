@@ -3,7 +3,7 @@ import { StyleSheet} from 'react-native';
 import { Button as PaperButton } from 'react-native-paper';
 import { theme } from '../core/theme';
 
-const Button = ({ mode, style, children, ...props }) => (
+const Buttonsubmit = ({ mode, style, children, ...props }) => (
   <PaperButton
     style={[
       styles.button,
@@ -20,9 +20,9 @@ const Button = ({ mode, style, children, ...props }) => (
 
 const styles = StyleSheet.create({
   button: {
-    width: '100%',
+    width: '80%',
     marginVertical: 10,
-    // left:20,
+    left:20,
     // alignItems: "center",
   },
   text: {
@@ -32,4 +32,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default memo(Button);
+export default memo(Buttonsubmit);

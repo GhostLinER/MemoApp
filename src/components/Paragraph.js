@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 26,
     color: theme.colors.secondary,
-    textAlign: 'center',
+    // textAlign: 'center',
+    fontWeight: 'bold',
     marginBottom: 14,
   },
 });

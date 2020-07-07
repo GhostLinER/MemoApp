@@ -9,6 +9,9 @@ import Textsame from '../components/Textsame';
 import Textid from '../components/Textid';
 import Textage from '../components/Textage';
 import Header from '../components/Header';
+import Concent from '../components/Concent';
+import Buttonsubmit from '../components/Buttonsubmit';
+import RadioButton from '../components/RadioButton';
 // import Text from '../components/Textform';
 import * as firebase from 'firebase';
 import { View, Picker, StyleSheet } from 'react-native';
@@ -17,12 +20,108 @@ import RNPickerSelect from 'react-native-picker-select';
 
 const Formdata = ({ navigation }) => {
   const [id, setId] = useState({ value: '', error: '' });
-  const [gender, setGender] = useState({ value: '', error: '' });
+  const [gender, setGender] = useState('male');
+  const [maleCheck , setMaleCheck] = useState(false);
+  const [femaleCheck , setFemaleCheck] = useState(false);
   const [age, setAge] = useState({ value: '', error: '' });
   const [drug, setDrug] = useState({ value: '', error: '' });
   const [mg, setMG] = useState({ value: '', error: '' });
   const [ml, setML] = useState({ value: '', error: '' });
-  const [selectedValue, setSelectedValue] = useState({ value: '', error: '' });
+  const [problem, setProblem] = useState({ value: '', error: '' });
+  const problemall = [
+    {
+      problem1: [
+        { label: '5.5% calcium gluconate', value: '5.5% calcium gluconate', },
+        { label: '10% calcium gluconate', value: '10% calcium gluconate', },
+        { label: '20% lipid', value: '20% lipid', },
+        { label: '50% MgSo4', value: '50% MgSo4', },
+        { label: 'Contrast media', value: 'Contrast media', },
+        { label: 'Dextrose (>10%)', value: 'Dextrose (>10%)', },
+        { label: 'KCl (> 40 mmol/L)', value: 'KCl (> 40 mmol/L)', },
+        { label: 'Mannitol', value: 'Mannitol', },
+        { label: 'NSS (>3-10%)', value: 'NSS (>3-10%)', },
+        { label: 'PPN/ TPN', value: 'PPN/ TPN', },
+        { label: 'Phenytoin', value: 'Phenytoin', },
+        { label: 'Others', value: 'OthersHyperosmolar', },
+      ]
+    },
+    {
+      problem2: [
+        { name: 'Bleomycin C', id: 'Bleomycin', },
+        { name: 'Cisplatin', id: 'Cisplatin', },
+        { name: 'Carmustine Cetuximab', id: 'Carmustine Cetuximab', },
+        { name: 'Cyclophosphamide', id: 'Cyclophosphamide', },
+        { name: 'Dacarbazine Etoposide', id: 'Dacarbazine Etoposide', },
+        { name: 'Dactinomycin', id: 'Dactinomycin', },
+        { name: 'Doxorubicin', id: 'Doxorubicin', },
+        { name: 'Docetaxel', id: 'Docetaxel', },
+        { name: 'Epirubicin', id: 'Epirubicin', },
+        { name: 'Gemtalabine Teniposide', id: 'Gemtalabine Teniposide', },
+        { name: 'Idarubicin', id: 'Idarubicin', },
+        { name: 'Mitomycin C', id: 'Mitomycin C', },
+        { name: 'Oxaliplatin', id: 'Oxaliplatin', },
+        { name: 'Paclitaxel', id: 'Paclitaxel', },
+        { name: 'Vinblastine Vincristine', id: 'Vinblastine Vincristine', },
+        { name: 'Vindesine Vinorelbine', id: 'Vindesine Vinorelbine', },
+        { name: 'Others', id: 'OthersChemotherapy', },
+      ],
+    },
+    {
+      problem3: [
+        { name: 'Adrenaline', id: 'Adrenaline', },
+        { name: 'Dobutamine', id: 'Dobutamine', },
+        { name: 'Dopamine', id: 'Dopamine', },
+        { name: 'Norepinephrine', id: 'Norepinephrine', },
+        { name: 'Others', id: 'OthersVascular', },
+      ]
+    },
+    {
+      problem4: [
+        { name: 'Acyclovir', id: 'Acyclovir', },
+        { name: 'Aminophylline', id: 'Aminophylline', },
+        { name: 'Amphotericin B', id: 'Amphotericin B', },
+        { name: 'Cefotaxime', id: 'Cefotaxime', },
+        { name: 'Ceftriaxone', id: 'Ceftriaxone', },
+        { name: 'Co trimoxazole', id: 'Co trimoxazole', },
+        { name: 'Erythromycin', id: 'Erythromycin', },
+        { name: 'Ganciclovir', id: 'Ganciclovir', },
+        { name: 'Liposomal Amphotericin B', id: 'Liposomal Amphotericin B', },
+        { name: 'Penicillin', id: 'Penicillin', },
+        { name: 'Vancomycin', id: 'Vancomycin', },
+        { name: 'Others', id: 'OthersAntibiotic', },
+      ]
+    },
+    {
+      problem5: [
+        { name: 'Diazepam', id: 'Diazepam', },
+        { name: 'Phenobarbital', id: 'Phenobarbital', },
+        { name: 'Thiopental', id: 'Thiopental', },
+        { name: 'Others', id: 'OthersSedative', },
+      ],
+    }, 
+    {
+      problem6: [
+        { name: 'Amiodarone', id: 'Amiodarone', },
+        { name: 'Digoxin', id: 'Digoxin', },
+        { name: 'Vasopressin', id: 'Vasopressin', },
+        { name: 'Others', id: 'OthersArrythmia', },
+      ],
+    }, 
+    {
+      problem7: [
+        { name: 'Others', id: 'Others', },
+      ],
+    }
+  ]
+  const drugs = [
+    {label: 'Hyperosmolar agents',value: 'Hyperosmolar agents'},
+    {label: 'Chemotherapy',value: 'Chemotherapy'},
+    {label: 'Vascular regulators',value: 'Vascular regulators'},
+    {label: 'Antibiotic (Acid) & (alkaline)',value: 'Antibiotic (Acid) & (alkaline)'},
+    {label: 'Sedative drugs & Anticonvulsant',value: 'Sedative drugs & Anticonvulsant'},
+    {label: 'Arrythmia drugs & vasopressor',value: 'Arrythmia drugs & vasopressor'},
+    {label: 'Others',value: 'Others'}
+  ]
   const pickerStyle = {
     inputIOS: {
       color: 'black',
@@ -50,11 +149,47 @@ const Formdata = ({ navigation }) => {
       right: 15,
     },
   };
-  // const mockData = [
-  //   { id: 1, name: 'React Native Developer' },
-  //   { id: 2, name: 'Android Developer' },
-  //   { id: 3, name: 'iOS Developer' },
-  // ];
+  const _chooseprob = () => {
+    // if(drug.value == 'Hyperosmolar agents') {
+    //   console.log(problemall['problem1'])
+    // }
+    <RNPickerSelect 
+            onValueChange={(value) => setDrug(value)}
+            style={pickerStyle}
+            placeholder={{
+              label: 'Select Drug',
+              value: null,
+            }}
+            items = {drugs}
+      />
+  }
+  const maleCheckHandler = () => {
+    if(femaleCheck){
+      setFemaleCheck(false);
+      setMaleCheck(true);
+      setGender('male');
+    }
+    else {
+      // setFemaleCheck(true);
+      setMaleCheck(false);
+      setGender('female');
+    }
+  };
+  const femaleCheckHandler = () => {
+    if(maleCheck){
+      setFemaleCheck(true);
+      setMaleCheck(false);
+      setGender('female');
+    }
+    else {
+      // setFemaleCheck(true);
+      setMaleCheck(true);
+      setGender('male');
+    }
+    console.log(gender);
+    console.log(maleCheck);
+    console.log(femaleCheck);
+  };
   const _submit = () => {
     // console.log(id.value);
     // console.log(gender.value);
@@ -100,7 +235,7 @@ const Formdata = ({ navigation }) => {
       <View style={styles.row}>
         <View style={styles.inputWrap}>
           <Textid
-            label="Id"
+            label="ID"
             onChangeText={text => {
               setId({ value: text });
             }}
@@ -108,108 +243,107 @@ const Formdata = ({ navigation }) => {
         </View>
         <View style={styles.inputWrap2}>
           <Textage
-            label="Age"
+            label="AGE"
             onChangeText={text => {
               setAge({ value: text });
             }}
           />
         </View>
       </View>
-      <TextInput
-        label="Gender"
-        onChangeText={text => {
-          setGender({ value: text });
-        }}
-      />
-      <TextInput
-        label="Drug"
-        onChangeText={text => {
-          setDrug({ value: text });
-        }}
-      />
-      {/* <View style={styles.container}>
-        {/* <View > */}
-        {/* <Picker
-          selectedValue={selectedValue}
-          style={{ height: 50, width: 150 }}
-          onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-        >
-          <Picker.Item label="Java" value="java" />
-          <Picker.Item label="JavaScript" value="js" />
-          <Picker.Item label="J" value="ja" />
-          <Picker.Item label="va" value="a" />
-        </Picker> */}
-      {/* </View> */} 
+      <View style={styles.row}>
+        <View style={styles.inputWrap3}>
+          <View style={styles.rowgen}>
+              <RadioButton checked={maleCheck} onPress={maleCheckHandler}>
+              </RadioButton>
+              <Paragraph>MALE</Paragraph>
+              </View>
+        </View>
+        <View style={styles.inputWrap3}>
+          <View style={styles.rowgen}>
+              <RadioButton checked={femaleCheck} onPress={femaleCheckHandler}>
+              </RadioButton> 
+              <Paragraph>FEMALE</Paragraph>
+          </View>
+        </View>
+      </View>
       <RNPickerSelect 
-            onValueChange={(value) => setSelectedValue(value)}
-            // style={styles.select}
+            onValueChange={(value) => setDrug(value)}
             style={pickerStyle}
             placeholder={{
               label: 'Select Drug',
               value: null,
             }}
-            items={[
-                { label: 'Football', value: 'football' },
-                { label: 'Baseball', value: 'baseball' },
-                { label: 'Hockey', value: 'hockey' },
-            ]}
-        />
-      {/* console.log(selectedValue.value); */}
-      {/* <TextInput
-        label="ConcentrationMG"
-        onChangeText={text => {
-          setMG({ value: text });
-        }}
+            items = {drugs}
       />
-      <TextInput
-        label="ConcentrationML"
-        onChangeText={text => {
-          setML({ value: text });
-        }}
-      />
-      <Button mode="contained" onPress={_submit}>
-        submit data
+      <View style={styles.row}>
+        <View style={styles.inputWrap3}>
+          <Concent
+            label="Concent(MG)"
+            onChangeText={text => {
+              setMG({ value: text });
+            }}
+          />
+        </View>
+        <View style={styles.inputWrap4}>
+          <Concent
+            label="Concent(ML)"
+            onChangeText={text => {
+              setML({ value: text });
+            }}
+          />
+        </View>
+      </View>
+      <Button mode="contained" onPress={() => navigation.navigate('CameraUse')}>
+        Add Picture
       </Button>
-      <Button mode="outlined" onPress={() => navigation.navigate('Dashboard')}>
-        Back to Home
-      </Button> */}
+      <View style={styles.row}>
+        <View style={styles.inputWrap}>
+          <Buttonsubmit mode="contained" onPress={_submit}>
+            submit
+          </Buttonsubmit>
+        </View>
+        <View style={styles.inputWrap}>
+          <Buttonsubmit mode="contained" onPress={() => navigation.navigate('Dashboard')}>
+            Home
+          </Buttonsubmit>
+        </View>
+      </View>
     </Background>
   );
 };
 
 const styles = StyleSheet.create({
   row: {
-    // flex: 1,
     flexDirection: 'row',
-    // right: -5,
-    // marginBottom: 100,
+    marginVertical: 10,
+  },
+  rowgen: {
+    flexDirection:'row',
+  },
+  textgender: {
+    left: -120,
   },
   inputWrap: {
     flex: 1,
-    // borderColor: '#cccccc',
-    // borderBottomWidth: 1,
-    // marginBottom: 100,
-    // right :25,
   },
   inputWrap2: {
     flex: 1,
-    // borderColor: '#cccccc',
-    // borderBottomWidth: 1,
-    // marginBottom: 100,
     right :-15,
     width: '100%',
   },
+  inputWrap3: {
+    marginHorizontal:10,
+    width: '50%',
+  },
+  inputWrap4: {
+    width: '50%',
+  },
   select: {
-    borderBottomColor: "#00ff00",
     width: '100%',
     height: '100%',
     marginVertical: 20,
   },
   container: {
-    // flex: 1,
-    // flexDirection: 'column',
-    // justifyContent: 'flex-start',
-    // up:10,
     bottom: 80,
     left: -60,
   },

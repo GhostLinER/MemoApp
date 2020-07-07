@@ -3,7 +3,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import { TextInput as Input } from 'react-native-paper';
 import { theme } from '../core/theme';
 
-const TextInput = ({ errorText, ...props }) => (
+const Concent = ({ errorText, ...props }) => (
   <View style={styles.container}>
     <Input
       style={styles.input}
@@ -18,20 +18,18 @@ const TextInput = ({ errorText, ...props }) => (
 
 const styles = StyleSheet.create({
   container: {
-    width: '130%',
-    // height : '40%',
+    width: '90%',
     marginVertical: 12,
-    // left:-80,
   },
   input: {
     backgroundColor: theme.colors.surface,
   },
   error: {
-    fontSize: 14,
+    fontSize: 5,
     color: theme.colors.error,
     paddingHorizontal: 4,
     paddingTop: 4,
   },
 });
 
-export default memo(TextInput);
+export default memo(Concent);
